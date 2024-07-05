@@ -1,4 +1,6 @@
-![image](https://github.com/CriistianEspinosa/FinalProject/assets/169914497/459f3d17-b380-4bbf-864e-ea607b214d12)
+![C and C tic tac toe](https://github.com/CriistianEspinosa/FinalProject/assets/169914497/d2c9085b-4f6d-4467-a01c-cd5601b9c8b3)
+
+
 
 
 
@@ -42,3 +44,6 @@ Include buttons to start a new game or exit the program.
 * #### Extras (Optional):
 Enhance the graphical interface with representative images and appealing colors.
 Implement sound effects for game actions (clicks, victory, draw).
+
+
+
