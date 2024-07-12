@@ -17,7 +17,7 @@ BOARD = pygame.transform.scale(BOARD, (BOARD_WIDTH, BOARD_HEIGHT))
 X_IMG = pygame.image.load("X.png")
 O_IMG = pygame.image.load("O.png")
 TIC = pygame.image.load("TicTacToe.png")
-TIC = pygame.transform.scale(TIC, (450, 210))
+TIC = pygame.transform.scale(TIC, (450, 230))
 
 # Variables del juego
 board = [['', '', ''], ['', '', ''], ['', '', '']]
@@ -30,7 +30,7 @@ game_finished = False
 # Función para mostrar la pantalla de reglas
 def show_rules_screen():
     SCREEN.fill(BG_COLOR)
-    rules_font = pygame.font.Font("Mario-Kart-DS.ttf", 55)  # Using default font
+    rules_font = pygame.font.Font("Mario-Kart-DS.ttf", 70)  # Using default font
     text1 = rules_font.render("Welcome   To   Tic   Tac   Toe!", True, (0, 0, 0))
     rules_font = pygame.font.Font("VerilySerifMono.otf", 20)  # Using default font
     text2 = rules_font.render("Rules:", True, (0, 0, 0))
@@ -43,13 +43,13 @@ def show_rules_screen():
     button_font = pygame.font.Font("Mario-Kart-DS.ttf", 40)  # Using default font
     start_text = button_font.render("Start Game", True, (255, 255, 255))
     
-    SCREEN.blit(text1, (160, 70))
-    SCREEN.blit(text2, (50, 170))
-    SCREEN.blit(text3, (50, 220))
-    SCREEN.blit(text4, (50, 270))
-    SCREEN.blit(text5, (50, 320))
+    SCREEN.blit(text1, (70, 50))
+    SCREEN.blit(text2, (50, 150))
+    SCREEN.blit(text3, (50, 200))
+    SCREEN.blit(text4, (50, 250))
+    SCREEN.blit(text5, (50, 300))
     SCREEN.blit(start_text, (400, 610))
-    SCREEN.blit(TIC, (275, 365))
+    SCREEN.blit(TIC, (275, 345))
     pygame.display.flip()
 
 # Función para renderizar el tablero en la pantalla
