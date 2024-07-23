@@ -1,5 +1,6 @@
 import pygame
 import sys
+import sqlite3
 
 # Pygame Initialization
 pygame.init()
@@ -35,6 +36,45 @@ game_finished = False
 score_X = 0
 score_O = 0
 draws = 0
+
+# Winning Conditions
+victories_X = 0
+victories_O = 0
+
+# Database Initialization
+def init_db():
+    conn = sqlite3.connect('tic_tac_toe_results.db')
+    cursor = conn.cursor()
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS results (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            result TEXT,
+            score_X INTEGER,
+            score_O INTEGER,
+            draws INTEGER,
+            date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )
+    ''')
+    conn.commit()
+    conn.close()
+
+def insert_result(result, score_X, score_O, draws):
+    conn = sqlite3.connect('tic_tac_toe_results.db')
+    cursor = conn.cursor()
+    cursor.execute('''
+        INSERT INTO results (result, score_X, score_O, draws)
+        VALUES (?, ?, ?, ?)
+    ''', (result, score_X, score_O, draws))
+    conn.commit()
+    conn.close()
+
+def get_results():
+    conn = sqlite3.connect('tic_tac_toe_results.db')
+    cursor = conn.cursor()
+    cursor.execute('SELECT * FROM results ORDER BY date DESC')
+    results = cursor.fetchall()
+    conn.close()
+    return results
 
 # Function to Display Rules Screen
 def show_rules_screen():
@@ -125,7 +165,7 @@ def check_win(board):
 
 # Function to Display Result Screen
 def show_result_screen(result):
-    global score_X, score_O, draws
+    global score_X, score_O, draws, victories_X, victories_O
     SCREEN.fill(BG_COLOR)
     rules_font = pygame.font.Font("mario.ttf", 200)
     textGame = rules_font.render("H", True, (0, 0, 0))
@@ -137,8 +177,10 @@ def show_result_screen(result):
         text = font.render(f"{result} WINS!", True, (0, 0, 0))
         if result == 'X':
             score_X += 1
+            victories_X += 1
         elif result == 'O':
             score_O += 1
+            victories_O += 1
 
     SCREEN.blit(text, (WIDTH // 2 - text.get_width() // 2, HEIGHT // 2 - text.get_height() // 2 - 100))
     
@@ -163,8 +205,31 @@ def show_result_screen(result):
     SCREEN.blit(textGame, (440, 60))
     pygame.display.flip()
 
+    # Store result in the database
+    insert_result(result, score_X, score_O, draws)
+
+    # Check if game should end
+    if victories_X >= 3 or victories_O >= 3 or draws >= 3:
+        pygame.time.wait(2000)  # Wait for 2 seconds to show final message
+        if victories_X >= 3:
+            final_message = "X WINS THE GAME!"
+        elif victories_O >= 3:
+            final_message = "O WINS THE GAME!"
+        else:
+            final_message = "IT'S A DRAW GAME!"
+        
+        SCREEN.fill(BG_COLOR)
+        font = pygame.font.Font("VerilySerifMono.otf", 80)
+        final_text = font.render(final_message, True, (0, 0, 0))
+        SCREEN.blit(final_text, (WIDTH // 2 - final_text.get_width() // 2, HEIGHT // 2 - final_text.get_height() // 2))
+        pygame.display.flip()
+        pygame.time.wait(3000)  # Wait for 3 seconds to show final message
+        pygame.quit()
+        sys.exit()
+
 # Main Game Function
 def main():
+    init_db()  # Initialize the database
     show_rules_screen()  # Show Initial Rules Screen
 
     while True:
@@ -219,4 +284,3 @@ def run_game():
 # Start the Game
 if __name__ == "__main__":
     main()
-
