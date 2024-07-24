@@ -40,6 +40,10 @@ Implements logic to find a winner after each move. Detect and announce who has w
 Shows a screen at the end of the game showing the result (win or draw). Includes buttons to start a new game or exit the program.
 ![Captura de pantalla 2024-07-23 195626](https://github.com/user-attachments/assets/7f08d60a-9435-495d-b420-7fdcb7292f26)
 
+* #### Database:
+To keep a detailed record of all the results obtained during the game, a database in .db format is implemented using SQLite.
+![image](https://github.com/user-attachments/assets/52e2d290-dcf2-4f6f-835e-330906c3e52b)
+
 
 * #### Extras (Optional):
 Enhance the graphical interface with representative images and appealing colors.
