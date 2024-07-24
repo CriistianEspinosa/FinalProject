@@ -29,9 +29,9 @@ Choose between two symbols (X and O) for each player.
 Provide options to select colors for symbols (predefined options like Red and Blue).
 
 * #### Game Board:
-Show an interactive 3x3 board where players can click on cells to mark them with their corresponding symbol.
-Indicate whose turn it is at any given time.
-Visually update the game state after each move.
+It displays an interactive 3x3 board where players can click on cells to mark them with their corresponding symbol. Indicate whose turn it is at each moment. Visually updates the game state after each move.
+<img "https://github.com/user-attachments/assets/0339c3d8-c3ed-4c8a-bc2a-478bd51889c9">
+
 
 * #### Game Logic:
 Implement logic to check for a winner after each move.
