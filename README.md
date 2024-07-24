@@ -30,7 +30,8 @@ Provide options to select colors for symbols (predefined options like Red and Bl
 
 * #### Game Board:
 It displays an interactive 3x3 board where players can click on cells to mark them with their corresponding symbol. Indicate whose turn it is at each moment. Visually updates the game state after each move.
-<img "https://github.com/user-attachments/assets/0339c3d8-c3ed-4c8a-bc2a-478bd51889c9">
+![Captura de pantalla 2024-07-23 195154](https://github.com/user-attachments/assets/a4514ebd-aa55-440f-8441-d2f2479a3c9d)
+
 
 
 * #### Game Logic:
