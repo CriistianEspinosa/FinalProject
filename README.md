@@ -33,14 +33,13 @@ It displays an interactive 3x3 board where players can click on cells to mark th
 ![Captura de pantalla 2024-07-23 195154](https://github.com/user-attachments/assets/a4514ebd-aa55-440f-8441-d2f2479a3c9d)
 
 
-
 * #### Game Logic:
-Implement logic to check for a winner after each move.
-Detect and announce who has won or if the game has ended in a draw.
+Implements logic to find a winner after each move. Detect and announce who has won or if the game has ended in a tie.
 
 * #### Results Interface:
-Display a screen at the end of the game showing the result (winner or draw).
-Include buttons to start a new game or exit the program.
+Shows a screen at the end of the game showing the result (win or draw). Includes buttons to start a new game or exit the program.
+![Captura de pantalla 2024-07-23 195626](https://github.com/user-attachments/assets/7f08d60a-9435-495d-b420-7fdcb7292f26)
+
 
 * #### Extras (Optional):
 Enhance the graphical interface with representative images and appealing colors.
