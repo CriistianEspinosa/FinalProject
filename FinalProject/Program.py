@@ -4,14 +4,12 @@ import sqlite3
 
 # Pygame Initialization
 pygame.init()
-
 # Constants and Global Variables
 WIDTH, HEIGHT = 1000, 700
 BOARD_WIDTH, BOARD_HEIGHT = 900, 600
 BG_COLOR = (214, 201, 227)
 SCREEN = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Tic Tac Toe")
-
 # Load and Scale Images
 BOARD = pygame.image.load("Board.png")
 BOARD = pygame.transform.scale(BOARD, (BOARD_WIDTH, BOARD_HEIGHT))
@@ -23,26 +21,36 @@ TIC = pygame.image.load("TicTacToe.png")
 TIC = pygame.transform.scale(TIC, (450, 210))
 START_BUTTON_IMG = pygame.image.load("STAR.png")
 START_BUTTON_IMG = pygame.transform.scale(START_BUTTON_IMG, (200, 100))
-
 # Game Variables
 board = [['', '', ''], ['', '', ''], ['', '', '']]
 graphical_board = [[[None, None], [None, None], [None, None]],
                    [[None, None], [None, None], [None, None]],
                    [[None, None], [None, None], [None, None]]]
-to_move = 'X'
-game_finished = False
+# Function to initialize game state and scoring variables
+def initialize_game_state():
+    """Initialize variables for game state and scoring."""
+    global to_move, game_finished
+    global score_X, score_O, draws
+    global victories_X, victories_O
 
-# Scoring Variables
-score_X = 0
-score_O = 0
-draws = 0
+    # Game State Variables
+    to_move = 'X'  # Player 'X' starts the game
+    game_finished = False  # Game is not finished at the start
 
-# Winning Conditions
-victories_X = 0
-victories_O = 0
+    # Scoring Variables
+    score_X = 0  # Initialize score for player 'X'
+    score_O = 0  # Initialize score for player 'O'
+    draws = 0  # Initialize number of draws
 
+    # Winning Conditions
+    victories_X = 0  # Initialize number of victories for player 'X'
+    victories_O = 0  # Initialize number of victories for player 'O'
+
+# Call function to initialize game state
+initialize_game_state()
 # Database Initialization
 def init_db():
+    """Initializes the database."""
     conn = sqlite3.connect('tic_tac_toe_results.db')
     cursor = conn.cursor()
     cursor.execute('''
@@ -57,8 +65,8 @@ def init_db():
     ''')
     conn.commit()
     conn.close()
-
 def insert_result(result, score_X, score_O, draws):
+    """Inserts a game result into the database."""
     conn = sqlite3.connect('tic_tac_toe_results.db')
     cursor = conn.cursor()
     cursor.execute('''
@@ -67,17 +75,17 @@ def insert_result(result, score_X, score_O, draws):
     ''', (result, score_X, score_O, draws))
     conn.commit()
     conn.close()
-
 def get_results():
+    """Fetches game results from the database."""
     conn = sqlite3.connect('tic_tac_toe_results.db')
     cursor = conn.cursor()
     cursor.execute('SELECT * FROM results ORDER BY date DESC')
     results = cursor.fetchall()
     conn.close()
     return results
-
 # Function to Display Rules Screen
 def show_rules_screen():
+    """Displays the rules screen."""
     SCREEN.fill(BG_COLOR)
     rules_font = pygame.font.Font("Mario-Kart-DS.ttf", 55)
     text1 = rules_font.render("Welcome   To   Tic   Tac   Toe", True, (0, 0, 0))
@@ -100,9 +108,9 @@ def show_rules_screen():
     SCREEN.blit(START_BUTTON_IMG, start_button_rect)
     SCREEN.blit(TIC, (275, 335))
     pygame.display.flip()
-
 # Function to Render Board on Screen
 def render_board(board, ximg, oimg):
+    """Renders the board on the screen based on the current game state."""
     global graphical_board
     cell_width = BOARD_WIDTH // 3
     cell_height = BOARD_HEIGHT // 3
@@ -114,9 +122,9 @@ def render_board(board, ximg, oimg):
             elif board[i][j] == 'O':
                 graphical_board[i][j][0] = oimg
                 graphical_board[i][j][1] = oimg.get_rect(center=(j * cell_width + cell_width // 2 + 50, i * cell_height + cell_height // 2 + 50))
-
 # Function to Add 'X' or 'O' to the Board
 def add_XO(board, graphical_board, to_move):
+    """Adds 'X' or 'O' to the board based on the player's move."""
     current_pos = pygame.mouse.get_pos()
     cell_width = BOARD_WIDTH // 3
     cell_height = BOARD_HEIGHT // 3
@@ -134,20 +142,23 @@ def add_XO(board, graphical_board, to_move):
                 SCREEN.blit(graphical_board[i][j][0], graphical_board[i][j][1])
     
     return board, to_move
-
 # Function to Check for Winner or Draw
 def check_win(board):
+    """Checks for a winner or a draw in the game."""
     winner = None
+    # Check rows for a win
     for row in range(3):
         if board[row][0] == board[row][1] == board[row][2] and board[row][0] != '':
             winner = board[row][0]
             return winner
 
+    # Check columns for a win
     for col in range(3):
         if board[0][col] == board[1][col] == board[2][col] and board[0][col] != '':
             winner = board[0][col]
             return winner
    
+    # Check diagonals for a win
     if board[0][0] == board[1][1] == board[2][2] and board[0][0] != '':
         winner = board[0][0]
         return winner
@@ -156,15 +167,16 @@ def check_win(board):
         winner = board[0][2]
         return winner
     
+    # Check for a draw
     if winner is None:
         for row in board:
             for cell in row:
                 if cell not in ['X', 'O']:
                     return None
         return "DRAW"
-
 # Function to Display Result Screen
 def show_result_screen(result):
+    """Displays the result screen after the game ends."""
     global score_X, score_O, draws, victories_X, victories_O
     SCREEN.fill(BG_COLOR)
     rules_font = pygame.font.Font("mario.ttf", 200)
@@ -226,9 +238,9 @@ def show_result_screen(result):
         pygame.time.wait(3000)  # Wait for 3 seconds to show final message
         pygame.quit()
         sys.exit()
-
 # Main Game Function
 def main():
+    """Main function to start the game."""
     init_db()  # Initialize the database
     show_rules_screen()  # Show Initial Rules Screen
 
@@ -244,9 +256,9 @@ def main():
                     SCREEN.blit(BOARD, (50, 50))  # Adjust Position According to New Board Size
                     pygame.display.update()
                     run_game()  # Start the Game
-
 # Function to Run the Game
 def run_game():
+    """Runs the main game loop."""
     global board, graphical_board, to_move, game_finished
 
     while True:
@@ -280,7 +292,6 @@ def run_game():
                         game_finished = True
                 
                 pygame.display.update()
-
 # Start the Game
 if __name__ == "__main__":
     main()
